@@ -1,0 +1,32 @@
+Name: Environment-Account-PR-Branch
+SchemaVersion: "1.0"
+
+Triggers:
+  - Type: PULLREQUEST
+    Events:
+      - OPEN
+      - REVISION
+
+Actions:
+  Terraform-PR-Branch-Plan:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+      Variables:
+        - Name: TF_VAR_tf_caller
+          Value: PR-Branch-Infrastructure
+    Environment:
+      Connections:
+        - Role: PR-Branch-Infrastructure
+          Name: "123456789012" # Replace with your AWS Account ID here.
+      Name: MainAccount
+    Configuration: 
+      Steps:
+        - Run: export TF_VERSION=1.3.7 && wget -O terraform.zip "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+        - Run: unzip terraform.zip && rm terraform.zip && mv terraform /usr/bin/terraform && chmod +x /usr/bin/terraform
+        - Run: ENV=dev make plan
+        - Run: ENV=test make plan
+        - Run: ENV=prod make plan
+    Compute:
+      Type: EC2
