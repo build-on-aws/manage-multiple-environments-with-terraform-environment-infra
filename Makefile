@@ -34,7 +34,7 @@ validate:
 	$(call check_defined, ENV, Please set the ENV to plan for. Values should be dev, test, or prod)
 
 	@echo "Initializing Terraform ..."
-	@terraform init
+	@terraform init -no-color
 	
 	@echo 'Creating the $(value ENV) workspace ...'
 	@-terraform workspace new $(value ENV)
@@ -48,7 +48,7 @@ plan:
 	$(call check_defined, ENV, Please set the ENV to plan for. Values should be dev, test, or prod)
 
 	@echo "Initializing Terraform ..."
-	@terraform init
+	@terraform init -no-color
 	
 	@echo 'Creating the $(value ENV) workspace ...'
 	@-terraform workspace new $(value ENV)
@@ -57,13 +57,15 @@ plan:
 	@terraform workspace select $(value ENV)
 
 	@terraform plan  \
-  	  -var-file="env_accounts_vars/$(value ENV).tfvars" -no-color -input=false \
-  	  -out $(value ENV).plan
+  	  -var-file="env_accounts_vars/$(value ENV).tfvars" -no-color -input=false
 
 
 apply:
 	$(call check_defined, ENV, Please set the ENV to apply. Values should be dev, test, or prod)
 
+	@echo "Initializing Terraform ..."
+	@terraform init -no-color
+	
 	@echo 'Creating the $(value ENV) workspace ...'
 	@-terraform workspace new $(value ENV)
 
@@ -78,7 +80,7 @@ destroy:
 	$(call check_defined, ENV, Please set the ENV to apply. Values should be dev, test, or prod)
   
 	@echo "Initializing Terraform ..."
-	@terraform init
+	@terraform init -no-color
 	
 	@echo 'Creating the $(value ENV) workspace ...'
 	@-terraform workspace new $(value ENV)
