@@ -93,7 +93,7 @@ destroy:
 	@echo "## 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥 ##"
 	@read -p "Press enter to continue"
 	@terraform destroy \
-		-var-file="env_vars/$(value ENV).tfvars"
+	  -var-file="env_accounts_vars/$(value ENV).tfvars"
 
 
 # Check that given variables are set and all have non-empty values,
