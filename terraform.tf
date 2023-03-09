@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "tf-multi-account"
+    bucket         = "tf-state-files"
     key            = "terraform-environments-state-file/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "TerraformMainStateLock"
